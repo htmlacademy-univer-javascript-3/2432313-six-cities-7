@@ -151,7 +151,7 @@ function MainPage({placesCount}:MainPageProps): JSX.Element {
               <div className="cities__places-list places__list tabs__content">
                 {places.map((place) => (
                   <PlaceCard
-                    key={place.id} // Важно: key помогает React эффективно обновлять список
+                    key={place.id}
                     imageSrc={place.imageSrc}
                     price={place.price}
                     title={place.title}
