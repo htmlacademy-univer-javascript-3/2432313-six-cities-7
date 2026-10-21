@@ -11,6 +11,7 @@ type MainPageProps = {
 function MainPage({offers}:MainPageProps): JSX.Element {
 
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
+  void activeOffer;
 
   const handleCardMouseEnter = (offer: Offer) => {
     setActiveOffer(offer);

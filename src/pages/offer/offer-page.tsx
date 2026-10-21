@@ -4,6 +4,7 @@ import ReviewForm from '../../components/review-form/review-form';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
+  void id;
 
   return (
     <div className="page">
