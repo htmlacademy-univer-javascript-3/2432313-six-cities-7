@@ -1,34 +1,45 @@
-type PriceCardProps = {
-  imageSrc: string;
-  price: number;
-  title: string;
-  type: string;
-  ratingWidth: number;
-  isPremium?: boolean;
-  isFavorite?: boolean;
+import { Offer } from '../../types';
+import { Link } from 'react-router-dom';
+
+type PlaceCardProps = {
+  offer: Offer;
+  onMouseEnter?: (offer: Offer) => void;
+  onMouseLeave?: () => void;
 };
 
-function PriceCard({
-  imageSrc,
-  price,
-  title,
-  type,
-  ratingWidth,
-  isPremium = false,
-  isFavorite = false,
-}:PriceCardProps): JSX.Element{
+export default function PlaceCard({
+  offer,
+  onMouseEnter,
+  onMouseLeave
+}: PlaceCardProps): JSX.Element {
+  const {
+    id,
+    title,
+    type,
+    price,
+    rating,
+    isPremium,
+    isFavorite,
+    previewImage,
+  } = offer;
+
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card"
+      onMouseEnter={() => onMouseEnter?.(offer)}
+      onMouseLeave={() => onMouseLeave?.()}
+    >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
+
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src={imageSrc} width="260" height="200" alt="Place" />
-        </a>
+        <Link to={`/offer/${id}`}>
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+        </Link>
       </div>
+
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
@@ -47,19 +58,20 @@ function PriceCard({
             </span>
           </button>
         </div>
+
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${ratingWidth}%` }}></span>
+            <span style={{ width: `${Math.round(rating) * 20}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
+
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+
+        <p className="place-card__type">{type[0].toUpperCase() + type.slice(1)}</p>
       </div>
     </article>
   );
 }
-
-export default PriceCard;
