@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'; // Импортируем хуки
+import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../routes';
 import ReviewForm from '../../components/review-form/review-form';
 
