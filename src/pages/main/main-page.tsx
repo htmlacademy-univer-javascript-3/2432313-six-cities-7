@@ -3,6 +3,7 @@ import { AppRoute } from '../../routes';
 import { useState } from 'react';
 import OffersList from '../../components/offers-list/offers-list';
 import { Offer } from '../../types';
+import Map from '../../components/map/map';
 
 type MainPageProps = {
   offers: Offer[];
@@ -119,7 +120,9 @@ function MainPage({offers}:MainPageProps): JSX.Element {
 
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map
+                offers={offers}
+              />
             </div>
           </div>
         </div>
