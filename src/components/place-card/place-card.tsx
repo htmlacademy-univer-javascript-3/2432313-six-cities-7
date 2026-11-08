@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 
 type PlaceCardProps = {
   offer: Offer;
+  variant?: 'cities' | 'near-places';
   onMouseEnter?: (offer: Offer) => void;
   onMouseLeave?: () => void;
 };
 
 export default function PlaceCard({
   offer,
+  variant = 'cities',
   onMouseEnter,
   onMouseLeave
 }: PlaceCardProps): JSX.Element {
@@ -23,8 +25,12 @@ export default function PlaceCard({
     previewImage,
   } = offer;
 
+  const cardClass = variant === 'cities' ? 'cities__card' : 'near-places__card';
+  const imageWrapperClass = variant === 'cities' ? 'cities__image-wrapper' : 'near-places__image-wrapper';
+
   return (
-    <article className="cities__card place-card"
+    <article
+      className={`${cardClass} place-card`}
       onMouseEnter={() => onMouseEnter?.(offer)}
       onMouseLeave={() => onMouseLeave?.()}
     >
@@ -34,7 +40,7 @@ export default function PlaceCard({
         </div>
       )}
 
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${imageWrapperClass} place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </Link>
