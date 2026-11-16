@@ -8,15 +8,32 @@ import { State } from '../../store/reducer';
 import CitiesList from '../../components/cities-list/cities-list';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeCity } from '../../store/action';
+import SortingOptions from '../../components/sorting-options/sorting-options';
 
 function MainPage(): JSX.Element {
   const dispatch = useDispatch();
   const city = useSelector((state: State) => state.city);
   const allOffers = useSelector((state: State) => state.offers);
 
+  const [currentSorting, setCurrentSorting] = useState('Popular');
+
   const filteredOffers = allOffers.filter(
     (offer) => offer.city.name === city
   );
+
+  const sortedOffers = [...filteredOffers].sort((a, b) => {
+    switch (currentSorting) {
+      case 'Price: low to high':
+        return a.price - b.price;
+      case 'Price: high to low':
+        return b.price - a.price;
+      case 'Top rated first':
+        return b.rating - a.rating;
+      case 'Popular':
+      default:
+        return 0;
+    }
+  });
 
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
   void activeOffer;
@@ -77,24 +94,14 @@ function MainPage(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{filteredOffers.length} places to stay in {city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+
+              <SortingOptions
+                currentSorting={currentSorting}
+                onSortingChange={setCurrentSorting}
+              />
 
               <OffersList
-                offers={filteredOffers}
+                offers={sortedOffers}
                 onCardMouseEnter={handleCardMouseEnter}
                 onCardMouseLeave={handleCardMouseLeave}
               />
@@ -102,7 +109,8 @@ function MainPage(): JSX.Element {
             </section>
             <div className="cities__right-section">
               <Map
-                offers={filteredOffers}
+                offers={sortedOffers}
+                activeOffer={activeOffer}
               />
             </div>
           </div>
