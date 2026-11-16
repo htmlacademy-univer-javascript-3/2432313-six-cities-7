@@ -21,11 +21,25 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+const defaultCustomIcon = new L.Icon({
+  iconUrl: 'img/pin.svg',
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
+});
+
+const currentCustomIcon = new L.Icon({
+  iconUrl: 'img/pin-active.svg',
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
+});
+
 type MapProps = {
   offers: Offer[];
+  activeOffer?: Offer | null;
+  mapClassName?: string;
 };
 
-export default function Map({ offers }: MapProps): JSX.Element {
+export default function Map({ offers, activeOffer, mapClassName = 'cities__map' }: MapProps): JSX.Element {
   const center: [number, number] = [52.37454, 4.897976];
   const zoom = 13;
 
@@ -33,8 +47,7 @@ export default function Map({ offers }: MapProps): JSX.Element {
     <MapContainer
       center={center}
       zoom={zoom}
-      style={{ height: '600px', width: '100%' }}
-      className="cities__map"
+      className={mapClassName}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -44,6 +57,7 @@ export default function Map({ offers }: MapProps): JSX.Element {
         <Marker
           key={offer.id}
           position={[offer.location.latitude, offer.location.longitude]}
+          icon={offer.id === activeOffer?.id ? currentCustomIcon : defaultCustomIcon}
         >
           <Popup>
             <b>{offer.title}</b>
