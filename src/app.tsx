@@ -6,24 +6,19 @@ import OfferPage from './pages/offer/offer-page';
 import NotFoundPage from './pages/not-found/not-found-page';
 import PrivateRoute from './components/private-route/private-route';
 import { AppRoute } from './routes';
-import { Offer } from './types';
-
-type AppProps = {
-  offers: Offer[];
-};
 
 const AUTHORIZATION_STATUS = true;
 
-export default function App({ offers }: AppProps): JSX.Element {
+export default function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Main} element={<MainPage offers={offers} />} />
+        <Route path={AppRoute.Main} element={<MainPage />} />
         <Route path={AppRoute.Login} element={<LoginPage />} />
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authorizationStatus={AUTHORIZATION_STATUS}><FavoritesPage offers={offers}/></PrivateRoute>
+            <PrivateRoute authorizationStatus={AUTHORIZATION_STATUS}><FavoritesPage offers={[]}/></PrivateRoute>
           }
         />
         <Route path={`${AppRoute.Offer}/:id`} element={<OfferPage />} />
